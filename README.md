@@ -21,6 +21,7 @@ int main()
     LYW_CODE::TaskPool taskPool;
     taskPool.CreateTaskPool();
     int param = 111;
+    void * ptr = NULL;
 
     LYW_CODE::TaskPool::TaskInstance_t taskInstance;
 
@@ -31,7 +32,7 @@ int main()
     //同步任务 -- 阻塞模式
     taskPool.ExcuteSyncTask(workFunc, &iLoop, 4, 1000);
 
-    //任务清任务节点与任务添加
+    //申请任务节点与任务节点添加执行
     //taskPool.AllocateTaskNode(&taskInstance, workFunc, &param, 4, 1000);
     taskPool.AllocateTaskNode(&taskInstance, workFunc, NULL, 4, 1000, (void **)&ptr);
     memcpy(ptr, &param, 4);
