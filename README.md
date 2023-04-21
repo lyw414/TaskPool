@@ -1,6 +1,8 @@
 # 功能说明
 * 同步、异步执行任务
 * 线程池支持注册资源检测 动态调整线程数
+* 支持任务节点申请与节点参数保存 用于扩展其他任务类型
+
 # 使用说明
 ```c
 #include "TaskPool.h"
@@ -18,6 +20,7 @@ int main()
 {
     LYW_CODE::TaskPool taskPool;
     taskPool.CreateTaskPool();
+    int param = 111;
 
     LYW_CODE::TaskPool::TaskInstance_t taskInstance;
 
@@ -27,6 +30,12 @@ int main()
 
     //同步任务 -- 阻塞模式
     taskPool.ExcuteSyncTask(workFunc, &iLoop, 4, 1000);
+
+    //任务清任务节点与任务添加
+    //taskPool.AllocateTaskNode(&taskInstance, workFunc, &param, 4, 1000);
+    taskPool.AllocateTaskNode(&taskInstance, workFunc, NULL, 4, 1000, (void **)&ptr);
+    memcpy(ptr, &param, 4);
+    taskPool.ExcuteAsyncTask(taskInstance);
 
     taskPool.DestroyTaskPool();
     return 0;
